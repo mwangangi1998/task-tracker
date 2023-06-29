@@ -37,7 +37,7 @@ export default {
         id:3,
         text:'Meeting ',
         day: 'July 2rd at 2:30pm',
-        reminder:true
+        reminder:false
       },
     ]
   }

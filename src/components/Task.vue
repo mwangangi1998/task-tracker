@@ -1,6 +1,8 @@
 <template>
 <div>
-   <div :class="[task.reminder ? 'reminder' :'','task']">
+   <div 
+   :class="[task.reminder ? 'reminder' : '', 'task']"
+   >
     <h3>{{ task.text }} <i class="fas fa-times"></i></h3>
     <p>{{ task.day }}</p>
    </div>
@@ -24,7 +26,7 @@ export default{
     pad: 10px 20px;
     cursor: pointer;
 }
-.task reminder{
+.task .reminder{
     border-left: 5px solid green;
 }
 .task h3 {
