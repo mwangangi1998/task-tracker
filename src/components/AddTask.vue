@@ -6,11 +6,11 @@
         <div class="form-group">
             <input type="text" id="day"  v-model="day" placeholder="Add Day and time" >
         </div>
-        <div class="form-group xos">
+        <div class="form-group ">
            <Label > set reminder</Label><input type="checkbox"  id="reminder" v-model="reminder"  placeholder="Add Day and time" >
         </div>
         <div class="form-group">
-            <input type="submit" class="btn" >
+            <input type="submit" value="Add Task" class="btn" >
         </div>
     </form>
 </template>
@@ -35,7 +35,18 @@ export default{
                 alert('Add Task')
                 return
             }
+            const newTask={
+                id: Math.floor(Math.random()*100000),
+                text: this.text,
+                day: this.day,
+               reminder: this.reminder,
+            }
+            console.log(newTask);
+            this.text='',
+            this.day='',
+            this.reminder=false
         }
+       
     },
 }
 
