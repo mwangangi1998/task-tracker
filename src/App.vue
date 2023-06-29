@@ -1,7 +1,9 @@
 <template>
   <div class="container">
-    <Header title="Task Tracker" />
-  <Tasks :tasks="tasks"/>
+    <Header  title="Task Tracker" />
+    <Tasks @delete-task="deleteTask" :tasks="tasks"
+    @toggle-reminder="toggleRemider"
+    />
   </div>
 </template>
 
@@ -16,31 +18,44 @@ export default {
   },
   data() {
     return {
-      tasks:[]
+      tasks: [],
+    };
+  },
+  methods: {
+    deleteTask(id) {
+      if (confirm("Are you sure you want to delete?")) {
+        
+        this.tasks=this.tasks.filter((task)=>task.id !==id)
+      }
+    },
+    toggleRemider(id){
+this.tasks=this.tasks.map((task)=>task.id === id?{
+  ...task,reminder: !task.reminder
+} :task)
     }
   },
-  created(){
-    this.tasks=[
+  created() {
+    this.tasks = [
       {
-        id:1,
-        text:'Doctors Appointments',
-        day: 'June 29th at 2:30pm',
-        reminder:true
+        id: 1,
+        text: "Doctors Appointments",
+        day: "June 29th at 2:30pm",
+        reminder: true,
       },
       {
-        id:2,
-        text:'Presentation Appointments',
-        day: 'July 1st at 2:30pm',
-        reminder:true
+        id: 2,
+        text: "Presentation Appointments",
+        day: "July 1st at 2:30pm",
+        reminder: true,
       },
       {
-        id:3,
-        text:'Meeting ',
-        day: 'July 2rd at 2:30pm',
-        reminder:false
+        id: 3,
+        text: "Meeting ",
+        day: "July 2rd at 2:30pm",
+        reminder: false,
       },
-    ]
-  }
+    ];
+  },
 };
 </script>
 
