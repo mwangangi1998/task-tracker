@@ -57,7 +57,7 @@ const data=await res.json()
         })
         res.status===200 ? (
         this.tasks = this.tasks.filter((task) => task.id !== id)
-        ) : alert('Error occured while deleting..')
+        ) : alert('Error occured while deleting')
       }
     },
     toggleRemider(id) {
