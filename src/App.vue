@@ -1,9 +1,17 @@
 <template>
   <div class="container">
-    <Header  title="Task Tracker" />
-    <AddTask/>
-    <Tasks @delete-task="deleteTask" :tasks="tasks"
-    @toggle-reminder="toggleRemider"
+    <Header
+      @toggle-add-task="toggleAddTtask"
+      title="Task Tracker"
+      :AddTasks="AddTasks"
+    />
+    <div v-show="AddTasks">
+      <AddTask @add-task="addTask" />
+    </div>
+    <Tasks
+      @delete-task="deleteTask"
+      :tasks="tasks"
+      @toggle-reminder="toggleRemider"
     />
   </div>
 </template>
@@ -22,42 +30,54 @@ export default {
   data() {
     return {
       tasks: [],
+      AddTasks: false,
     };
   },
   methods: {
-    deleteTask(id) {
+    toggleAddTtask() {
+      this.AddTasks = !this.AddTasks;
+    },
+   async addTask(task) {
+const res =await fetch('http://localhost:5000/tasks',{
+  method: 'POST',
+  headers:{
+    'Content-type':'application/json',
+   
+  },
+  body:JSON.stringify(task),
+})
+const data=await res.json()
+      this.tasks = [...this.tasks, data];
+    },
+   async deleteTask(id) {
+    
       if (confirm("Are you sure you want to delete?")) {
-        
-        this.tasks=this.tasks.filter((task)=>task.id !==id)
+        const res =await fetch(`http://localhost:5000/tasks/${id}`,{
+          method: 'DELETE',
+        })
+        res.status===200 ? (
+        this.tasks = this.tasks.filter((task) => task.id !== id)
+        ) : alert('Error occured while deleting..')
       }
     },
-    toggleRemider(id){
-this.tasks=this.tasks.map((task)=>task.id === id?{
-  ...task,reminder: !task.reminder
-} :task)
+    toggleRemider(id) {
+      this.tasks = this.tasks.map((task) =>
+        task.id === id
+          ? {
+              ...task,
+              reminder: !task.reminder,
+            }
+          : task
+      );
+    },
+    async fetchTasks(){
+      const res=await fetch('http://localhost:5000/tasks')
+      const data=await res.json()
+      return data
     }
   },
-  created() {
-    this.tasks = [
-      {
-        id: 1,
-        text: "Doctors Appointments",
-        day: "June 29th at 2:30pm",
-        reminder: true,
-      },
-      {
-        id: 2,
-        text: "Presentation Appointments",
-        day: "July 1st at 2:30pm",
-        reminder: true,
-      },
-      {
-        id: 3,
-        text: "Meeting ",
-        day: "July 2rd at 2:30pm",
-        reminder: false,
-      },
-    ];
+ async created() {
+    this.tasks =await this.fetchTasks()
   },
 };
 </script>
